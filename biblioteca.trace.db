@@ -234,3 +234,57 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:293)
 	... 12 more
+2026-10-27 19:50:55.036190+01:00 database: flush
+org.h2.message.DbException: Error General : "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]" [50000-252]
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.message.DbException.convert(DbException.java:407)
+	at org.h2.mvstore.db.Store.lambda$new$0(Store.java:123)
+	at org.h2.mvstore.MVStore.handleException(MVStore.java:1693)
+	at org.h2.mvstore.MVStore.panic(MVStore.java:521)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:298)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2193)
+	at org.h2.mvstore.db.Store.<init>(Store.java:140)
+	at org.h2.engine.Database.<init>(Database.java:328)
+	at org.h2.engine.Engine.openSession(Engine.java:92)
+	at org.h2.engine.Engine.openSession(Engine.java:222)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:350)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:124)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:613)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:199)
+	at DropTables.main(DropTables.java:9)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: Error General : "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]" [50000-252]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 18 more
+Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:998)
+	at org.h2.mvstore.SingleFileStore.lockFileChannel(SingleFileStore.java:143)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:117)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:293)
+	... 12 more
+2026-10-27 19:52:28.941754+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "CREATE TABLE IF NOT EXISTS libros(\000a    id INT AUTO_INCREMENT PRIMARY KEY,\000a    id_autor INT NOT NULL,\000a    id_genero INT,\000a    isbn VARCHAR(20),\000a    anio INT,\000a    sinopsis VARCHAR(500) DEFAULT 'No disponible',\000a    CONSTRAINT fk_libros_autores\000a        FOREIGN KEY (id_autor)\000a        REFERENCES autores(id)\000a        ON DELETE RESTRICT,\000a    CONSTRAINT fk_libros_generos\000a        FOREIGN KEY (id_genero)\000a        REFERENCES generos(id)\000a        ON DELETE CASCADE\000a        [*]ON DELETE CASCADE\000a)\000a"; se esperaba "ON UPDATE, NOT DEFERRABLE, DEFERRABLE, NOCHECK, CHECK, ,, )"
+Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS libros(\000a    id INT AUTO_INCREMENT PRIMARY KEY,\000a    id_autor INT NOT NULL,\000a    id_genero INT,\000a    isbn VARCHAR(20),\000a    anio INT,\000a    sinopsis VARCHAR(500) DEFAULT 'No disponible',\000a    CONSTRAINT fk_libros_autores\000a        FOREIGN KEY (id_autor)\000a        REFERENCES autores(id)\000a        ON DELETE RESTRICT,\000a    CONSTRAINT fk_libros_generos\000a        FOREIGN KEY (id_genero)\000a        REFERENCES generos(id)\000a        ON DELETE CASCADE\000a        [*]ON DELETE CASCADE\000a)\000a"; expected "ON UPDATE, NOT DEFERRABLE, DEFERRABLE, NOCHECK, CHECK, ,, )"; SQL statement:
+CREATE TABLE IF NOT EXISTS libros(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_autor INT NOT NULL,
+    id_genero INT,
+    isbn VARCHAR(20),
+    anio INT,
+    sinopsis VARCHAR(500) DEFAULT 'No disponible',
+    CONSTRAINT fk_libros_autores
+        FOREIGN KEY (id_autor)
+        REFERENCES autores(id)
+        ON DELETE RESTRICT,
+    CONSTRAINT fk_libros_generos
+        FOREIGN KEY (id_genero)
+        REFERENCES generos(id)
+        ON DELETE CASCADE
+        ON DELETE CASCADE
+)
+ [42001-252]

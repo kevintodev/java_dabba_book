@@ -19,11 +19,13 @@ public class TableBooks {
                 CONSTRAINT fk_libros_autores
                     FOREIGN KEY (id_autor)
                     REFERENCES autores(id) 
-                    ON DELETE RESTRICT,
+                    ON DELETE CASCADE
+                    ON UPDATE CASCADE,
                 CONSTRAINT fk_libros_generos
                     FOREIGN KEY (id_genero)
                     REFERENCES generos(id) 
-                    ON DELETE RESTRICT
+                    ON DELETE CASCADE
+                    ON UPDATE CASCADE
             )
             """;
             st.executeUpdate(sql);

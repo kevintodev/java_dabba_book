@@ -22,7 +22,8 @@ public class TableLoans {
                 CONSTRAINT fk_prestamos_socios
                     FOREIGN KEY (id_socio)
                     REFERENCES socios(id) 
-                    ON DELETE RESTRICT         
+                    ON DELETE CASCADE         
+                    ON UPDATE CASCADE         
             )
             """;
             st.executeUpdate(sql);
