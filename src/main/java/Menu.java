@@ -1,6 +1,4 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Scanner;
 
 
@@ -29,7 +27,7 @@ public class Menu {
                     case 6 -> listBooks(con);
                     case 7 -> registerMember(con);
                     case 8 -> listMembers(con);
-                    case 9 -> registerLoans(con);
+                    case 9 -> registerLoan(con);
                     case 10 -> listLoans(con);
                     case 11 -> showStatistics(con);
                     case 99 -> System.out.println("Has salido de la biblioteca. Gracias por su visita.");
@@ -44,72 +42,6 @@ public class Menu {
 
         SC.close();
 
-    }
-
-    private static void showStatistics(Connection con) {
-        System.out.println("POR HACER: VER ESTADÍSTICAS");
-    }
-
-    private static void listLoans(Connection con) {
-        System.out.println("POR HACER: LISTAR PRÉSTAMOS");
-
-    }
-
-    private static void registerLoans(Connection con) {
-        System.out.println("POR HACER: REGISTRAR PRÉSTAMO");
-    }
-
-    private static void listMembers(Connection con) {
-
-        System.out.println("POR HACER: LISTAR SOCIOS");
-    }
-
-    private static void registerMember(Connection con) {
-        System.out.println("POR HACER: REGISTRAR SOCIO");
-
-    }
-
-    private static void listBooks(Connection con) {
-
-        System.out.println("POR HACER: LISTAR LIBROS");
-    }
-
-    private static void registerBook(Connection con) {
-
-        System.out.println("POR HACER: REGISTRAR LIBRO");
-    }
-
-    private static void listGenres(Connection con) {
-
-        System.out.println("POR HACER: LISTAR GÉNEROS");
-    }
-
-    private static void registerGenre(Connection con) {
-
-        System.out.println("POR HACER: REGISTRAR GÉNERO");
-    }
-
-    private static void listAuthors(Connection con) {
-
-        System.out.println("POR HACER: LISTAR AUTORES");
-    }
-
-    private static void registerAuthor(Connection con) {
-        System.out.println("POR HACER: REGISTRAR AUTOR");
-    }
-
-    private static int readInteger(String message) {
-        System.out.println(message);
-        // Asegurar que escribe un número
-        while (!SC.hasNextInt()) {
-            String in = SC.next();
-            System.out.println("Error: Opción no válida");
-            showMenu();
-            System.out.println(message);
-        }
-        int opt = SC.nextInt();
-        SC.nextLine(); // limpiar buffer
-        return opt;
     }
 
     private static void showMenu() {
@@ -127,5 +59,129 @@ public class Menu {
         System.out.println("11. Estadísticas");
         System.out.println("99. Salir");
     }
+
+    private static void registerAuthor(Connection con) {
+        /* Solicita  */
+        System.out.println("\n------------- REGISTRAR AUTOR --------------");
+        // Pedir nombre, año de nacimiento, nacionalidad, número de premios
+        String name = readStringInput("[+] Nombre del autor: ");
+        int year = readInteger("[+] Año de nacimiento: ");
+        String nationality = readStringInput("[+] Nacionalidad: ");
+        int nPrizes = readInteger("[+] Número de premios: ");
+
+        String sql = "INSERT INTO autores (nombre, anio_nacimiento, nacionalidad, premios) VALUES(?, ?, ?, ?)";
+        try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, name);
+            ps.setInt(2, year);
+            ps.setString(3, nationality);
+            ps.setInt(4, nPrizes);
+            ps.executeUpdate();
+
+            try ( ResultSet rs = ps.getGeneratedKeys() ) {
+                if (rs.next()) {
+                    System.out.println("Autor registrado con id: " + rs.getInt(1));
+                }
+            } catch (SQLException e) {
+                System.out.println("Error durante el registro: " + e.getMessage());
+            }
+
+        } catch ( SQLException e ) {
+            System.out.println("Error al registrar autor: " + e.getMessage());
+        }
+
+
+    }
+
+
+
+    private static void listAuthors(Connection con) {
+
+        String sql = "SELECT * FROM autores";
+        try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ResultSet rs = ps.executeQuery();
+            System.out.println("\n====================== LISTA DE AUTORES ============================");
+
+            while ( rs.next() ) {
+                int id = rs.getInt("id");
+                String name = rs.getString("nombre");
+                int year = rs.getInt("anio_nacimiento");
+                String nationality = rs.getString("nacionalidad");
+                int nPrizes = rs.getInt("premios");
+                System.out.println("---------------------------------------------------------------------------");
+                System.out.printf("ID: %d | Nombre: %s | Año de nacimiento: %d |  Nacionalidad: %s | Premios: %d%n",
+                        id, name, year, nationality, nPrizes);
+            }
+            System.out.println("---------------------------------------------------------------------------");
+            System.out.println("======================================================================");
+
+        } catch ( SQLException e ) {
+            System.out.println("Error al leer autores: " + e.getMessage());
+        }
+    }
+
+
+    private static void registerGenre(Connection con) {
+        System.out.println("POR HACER: REGISTRAR GÉNERO");
+    }
+
+    private static void listGenres(Connection con) {
+
+        System.out.println("POR HACER: LISTAR GÉNEROS");
+    }
+
+    private static void registerBook(Connection con) {
+
+        System.out.println("POR HACER: REGISTRAR LIBRO");
+    }
+
+    private static void listBooks(Connection con) {
+
+        System.out.println("POR HACER: LISTAR LIBROS");
+    }
+    private static void registerMember(Connection con) {
+        System.out.println("POR HACER: REGISTRAR SOCIO");
+
+    }
+    private static void listMembers(Connection con) {
+
+        System.out.println("POR HACER: LISTAR SOCIOS");
+    }
+
+    private static void registerLoan(Connection con) {
+        System.out.println("POR HACER: REGISTRAR PRÉSTAMO");
+    }
+
+    private static void listLoans(Connection con) {
+        System.out.println("POR HACER: LISTAR PRÉSTAMOS");
+
+    }
+
+    private static void showStatistics(Connection con) {
+        System.out.println("POR HACER: VER ESTADÍSTICAS");
+    }
+
+    private static int readInteger(String message) {
+        /* Función para leer un entero vía Scanner. Devuelve un entero*/
+        System.out.println(message);
+        // Asegurar que escribe un número
+        while (!SC.hasNextInt()) {
+            String in = SC.next();
+            System.out.println("Error: Opción no válida");
+            showMenu();
+            System.out.println(message);
+        }
+        int opt = SC.nextInt();
+        SC.nextLine(); // limpiar buffer
+        return opt;
+    }
+
+    private static String readStringInput(String message) {
+        System.out.println(message);
+        String output = SC.nextLine();
+        return output;
+    }
+
+
 
 }
