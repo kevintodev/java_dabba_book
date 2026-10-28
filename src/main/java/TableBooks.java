@@ -13,6 +13,7 @@ public class TableBooks {
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 id_autor INT NOT NULL,
                 id_genero INT,
+                titulo VARCHAR(200) NOT NULL,
                 isbn VARCHAR(20),
                 anio INT,
                 sinopsis VARCHAR(500) DEFAULT 'No disponible',
