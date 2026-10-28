@@ -47,17 +47,11 @@ public class Menu {
     private static void showMenu() {
         System.out.println("\n------------- BIBLIOTECA --------------");
         System.out.println("1. Registrar autor\t\t2. Listar autores");
-//        System.out.println("2. Listar autores");
         System.out.println("3. Registrar género\t\t4. Listar géneros");
-//        System.out.println("4. Listar géneros");
         System.out.println("5. Registrar libro\t\t6. Listar libros");
-//        System.out.println("6. Listar libros");
         System.out.println("7. Registrar Socio\t\t8. Listar socios");
-//        System.out.println("8. Listar socios");
         System.out.println("9. Prestar libro\t\t10. Listar préstamos");
-//        System.out.println("10. Listar préstamos");
         System.out.println("11. Estadísticas\t\t99. Salir");
-//        System.out.println("99. Salir");
     }
 
     private static void registerAuthor(Connection con) {
