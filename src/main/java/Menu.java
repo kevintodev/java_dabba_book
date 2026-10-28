@@ -46,18 +46,18 @@ public class Menu {
 
     private static void showMenu() {
         System.out.println("\n------------- BIBLIOTECA --------------");
-        System.out.println("1. Registrar autor ");
-        System.out.println("2. Listar autores");
-        System.out.println("3. Registrar género");
-        System.out.println("4. Listar géneros");
-        System.out.println("5. Registrar libro");
-        System.out.println("6. Listar libros");
-        System.out.println("7. Registrar Socio");
-        System.out.println("8. Listar socios");
-        System.out.println("9. Prestar libro");
-        System.out.println("10. Listar préstamos");
-        System.out.println("11. Estadísticas");
-        System.out.println("99. Salir");
+        System.out.println("1. Registrar autor\t\t2. Listar autores");
+//        System.out.println("2. Listar autores");
+        System.out.println("3. Registrar género\t\t4. Listar géneros");
+//        System.out.println("4. Listar géneros");
+        System.out.println("5. Registrar libro\t\t6. Listar libros");
+//        System.out.println("6. Listar libros");
+        System.out.println("7. Registrar Socio\t\t8. Listar socios");
+//        System.out.println("8. Listar socios");
+        System.out.println("9. Prestar libro\t\t10. Listar préstamos");
+//        System.out.println("10. Listar préstamos");
+        System.out.println("11. Estadísticas\t\t99. Salir");
+//        System.out.println("99. Salir");
     }
 
     private static void registerAuthor(Connection con) {
@@ -182,7 +182,6 @@ public class Menu {
         String isbn = readStringInput("[+] ISBN: ");
         int year = readInteger("Año de publicación: ");
         String sinopsis = readStringInput("[+] Sinopsis: ");
-
 
         String sql = "INSERT INTO libros (id_autor, id_genero, titulo, isbn, anio, sinopsis) VALUES(?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -318,13 +317,13 @@ public class Menu {
 
     private static int readInteger(String message) {
         /* Función para leer un entero vía Scanner. Devuelve un entero*/
-        System.out.println(message);
+        System.out.print(message);
         // Asegurar que escribe un número
         while (!SC.hasNextInt()) {
             String in = SC.next();
             System.out.println("Error: Opción no válida");
             showMenu();
-            System.out.println(message);
+            System.out.print(message);
         }
         int opt = SC.nextInt();
         SC.nextLine(); // limpiar buffer
@@ -332,7 +331,7 @@ public class Menu {
     }
 
     private static String readStringInput(String message) {
-        System.out.println(message);
+        System.out.print(message);
         String output = SC.nextLine();
         return output;
     }
