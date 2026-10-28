@@ -303,12 +303,75 @@ public class Menu {
     }
 
     private static void registerLoan(Connection con) {
-        System.out.println("POR HACER: REGISTRAR PRÉSTAMO");
+        /* Solicitar por teclado el ID del libro y  ID de socio  y lo guarda en la tabla préstamos
+        * La fecha de prestamo se pone la fecha actual, y la fecha de devolución a NULL por defecto
+        * */
+        System.out.println("\n------------- PRESTAR LIBRO --------------");
+
+        listBooks(con); // Lista libros para que el usuario elija la id
+        int idBook = readInteger("[+] ID del libro: ");
+        listMembers(con); // Lista socios para que el usuario elija la id
+        int idMember = readInteger("[+] ID del socio: ");
+
+        String sql = "INSERT INTO prestamos (id_libro, id_socio, fecha_prestamo) VALUES(?, ?, CURRENT_DATE)";
+        try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, idBook);
+            ps.setInt(2, idMember);
+            ps.executeUpdate();
+
+            try ( ResultSet rs = ps.getGeneratedKeys() ) {
+                if (rs.next()) {
+                    System.out.println("Préstamo registrado con id: " + rs.getInt(1));
+                }
+            } catch (SQLException e) {
+                System.out.println("Error durante el registro: " + e.getMessage());
+            }
+
+        } catch ( SQLException e ) {
+            System.out.println("Error al registrar préstamo: " + e.getMessage());
+        }
     }
 
     private static void listLoans(Connection con) {
-        System.out.println("POR HACER: LISTAR PRÉSTAMOS");
+        /* Lista los préstamos registrados en la biblioteca*/
+        String sql = """
+                SELECT
+                prestamos.id,
+                CAST(prestamos.fecha_prestamo AS VARCHAR) AS fecha_prestamo,
+                COALESCE(CAST(prestamos.fecha_devolucion AS VARCHAR), 'No devuelto') AS fecha_devolucion,
+                libros.titulo AS libro,
+                socios.nombre AS nombre_socio,
+                socios.apellido1 AS apellido_socio
+                FROM prestamos
+                INNER JOIN libros
+                    ON prestamos.id_libro = libros.id
+                INNER JOIN socios
+                    ON prestamos.id_socio = socios.id
+                """;
+        try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
+            ResultSet rs = ps.executeQuery();
+            System.out.println("\n====================== LISTA DE LIBROS ============================");
+
+            while ( rs.next() ) {
+                int id = rs.getInt("id");
+                String loanDate = rs.getString("fecha_prestamo");
+                String returnDate = rs.getString("fecha_devolucion");
+                String book = rs.getString("libro");
+                String memberName = rs.getString("nombre_socio");
+                String memberLastname = rs.getString("apellido_socio");
+
+
+                System.out.println("---------------------------------------------------------------------------");
+                System.out.printf("ID: %d | Socio: %s %s | Libro: %s | Fecha préstamo: %s | Fecha devolución: %s%n",
+                        id, memberName, memberLastname, book, loanDate, returnDate);
+            }
+            System.out.println("---------------------------------------------------------------------------");
+            System.out.println("======================================================================");
+
+        } catch ( SQLException e ) {
+            System.out.println("Error al leer la tabla libros: " + e.getMessage());
+        }
     }
 
     private static void showStatistics(Connection con) {
