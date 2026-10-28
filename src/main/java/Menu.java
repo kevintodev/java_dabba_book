@@ -334,11 +334,12 @@ public class Menu {
 
     private static void listLoans(Connection con) {
         /* Lista los préstamos registrados en la biblioteca*/
+        // Con coalesce, como fecha_devolución puede ser null, el valor dará 'Libro no devuelto'
         String sql = """
                 SELECT
                 prestamos.id,
                 CAST(prestamos.fecha_prestamo AS VARCHAR) AS fecha_prestamo,
-                COALESCE(CAST(prestamos.fecha_devolucion AS VARCHAR), 'No devuelto') AS fecha_devolucion,
+                COALESCE(CAST(prestamos.fecha_devolucion AS VARCHAR), 'Libro no devuelto') AS fecha_devolucion,
                 libros.titulo AS libro,
                 socios.nombre AS nombre_socio,
                 socios.apellido1 AS apellido_socio
@@ -375,7 +376,58 @@ public class Menu {
     }
 
     private static void showStatistics(Connection con) {
-        System.out.println("POR HACER: VER ESTADÍSTICAS");
+        /* Muestra la cantidad de libros de la base de datos, de libros prestados
+        * y de socios*/
+        int nBooks = countBooks(con);
+        int nMembers = countMembers(con);
+        int nLoans = countLoans(con);
+        System.out.println("================== ESTADÍSTICAS =====================");
+        System.out.println("[+] Libros registrados: " + nBooks);
+        System.out.println("[+] Socios registrados: " + nMembers);
+        System.out.println("[+] Préstamos de libros registrados: " + nLoans);
+        System.out.println("=====================================================");
+    }
+
+    private static int countLoans(Connection con) {
+        String sql = "SELECT COUNT(*) AS total FROM prestamos";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al contar préstamos: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    private static int countMembers(Connection con) {
+        String sql = "SELECT COUNT(*) AS total FROM socios";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al contar préstamos: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    private static int countBooks(Connection con) {
+        String sql = "SELECT COUNT(*) AS total FROM libros";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al contar préstamos: " + e.getMessage());
+        }
+        return 0;
     }
 
     private static int readInteger(String message) {
