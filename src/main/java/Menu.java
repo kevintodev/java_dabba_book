@@ -55,7 +55,7 @@ public class Menu {
         System.out.println("7. Registrar Socio");
         System.out.println("8. Listar socios");
         System.out.println("9. Prestar libro");
-        System.out.println("10.Listar préstamos");
+        System.out.println("10. Listar préstamos");
         System.out.println("11. Estadísticas");
         System.out.println("99. Salir");
     }
@@ -170,13 +170,79 @@ public class Menu {
     }
 
     private static void registerBook(Connection con) {
+        /* Solicitar por teclado el ID del autor, id de género, isbn y sinopsis
+         y lo guarda en la tabla libros */
+        System.out.println("\n------------- REGISTRAR LIBRO --------------");
 
-        System.out.println("POR HACER: REGISTRAR LIBRO");
+        listAuthors(con); // Lista autores para que el usuario elija la id
+        int idAuthor = readInteger("[+] ID del autor: ");
+        listGenres(con); // Lista géneros para que el usuario elija la id
+        int idGenre = readInteger("[+] ID del género: ");
+        String title = readStringInput("[+] Título: ");
+        String isbn = readStringInput("[+] ISBN: ");
+        int year = readInteger("Año de publicación: ");
+        String sinopsis = readStringInput("[+] Sinopsis: ");
+
+
+        String sql = "INSERT INTO libros (id_autor, id_genero, titulo, isbn, anio, sinopsis) VALUES(?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, idAuthor);
+            ps.setInt(2, idGenre);
+            ps.setString(3, title);
+            ps.setString(4, isbn);
+            ps.setInt(5, year);
+            ps.setString(6, sinopsis);
+            ps.executeUpdate();
+
+            try ( ResultSet rs = ps.getGeneratedKeys() ) {
+                if (rs.next()) {
+                    System.out.println("Libro registrado con id: " + rs.getInt(1));
+                }
+            } catch (SQLException e) {
+                System.out.println("Error durante el registro: " + e.getMessage());
+            }
+
+        } catch ( SQLException e ) {
+            System.out.println("Error al registrar libro: " + e.getMessage());
+        }
     }
 
     private static void listBooks(Connection con) {
+        /* Lista los libros registrados en la biblioteca */
+        String sql = """
+                SELECT libros.id, libros.titulo, libros.isbn, libros.anio, libros.sinopsis,
+                autores.nombre AS autor, generos.nombre AS genero
+                FROM libros
+                INNER JOIN autores
+                    ON libros.id_autor = autores.id
+                INNER JOIN generos
+                    ON libros.id_genero = generos.id
+        """;
+        try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-        System.out.println("POR HACER: LISTAR LIBROS");
+            ResultSet rs = ps.executeQuery();
+            System.out.println("\n====================== LISTA DE LIBROS ============================");
+
+            while ( rs.next() ) {
+                int id = rs.getInt("id");
+                String title = rs.getString("titulo");
+                String author = rs.getString("autor");
+                String genre = rs.getString("genero");
+                String isbn = rs.getString("isbn");
+                int year = rs.getInt("anio");
+                String synopsis = rs.getString("sinopsis");
+
+
+                System.out.println("---------------------------------------------------------------------------");
+                System.out.printf("ID: %d | Título: %s | Autor: %s | Género: %s | ISBN: %s | Año: %d | Sinopsis: %s%n",
+                        id, title, author, genre, isbn, year, synopsis);
+            }
+            System.out.println("---------------------------------------------------------------------------");
+            System.out.println("======================================================================");
+
+        } catch ( SQLException e ) {
+            System.out.println("Error al leer la tabla libros: " + e.getMessage());
+        }
     }
     private static void registerMember(Connection con) {
         System.out.println("POR HACER: REGISTRAR SOCIO");

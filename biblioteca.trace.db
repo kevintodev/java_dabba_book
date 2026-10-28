@@ -379,3 +379,158 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:293)
 	... 12 more
+2026-10-28 15:24:53.723572+01:00 database: flush
+org.h2.message.DbException: Error General : "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]" [50000-252]
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.message.DbException.convert(DbException.java:407)
+	at org.h2.mvstore.db.Store.lambda$new$0(Store.java:123)
+	at org.h2.mvstore.MVStore.handleException(MVStore.java:1693)
+	at org.h2.mvstore.MVStore.panic(MVStore.java:521)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:298)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2193)
+	at org.h2.mvstore.db.Store.<init>(Store.java:140)
+	at org.h2.engine.Database.<init>(Database.java:328)
+	at org.h2.engine.Engine.openSession(Engine.java:92)
+	at org.h2.engine.Engine.openSession(Engine.java:222)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:350)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:124)
+	at org.h2.util.JdbcUtils.getConnection(JdbcUtils.java:292)
+	at org.h2.server.web.WebServer.getConnection(WebServer.java:811)
+	at org.h2.server.web.WebApp.login(WebApp.java:1038)
+	at org.h2.server.web.WebApp.process(WebApp.java:226)
+	at org.h2.server.web.WebApp.processRequest(WebApp.java:176)
+	at org.h2.server.web.WebThread.process(WebThread.java:154)
+	at org.h2.server.web.WebThread.run(WebThread.java:103)
+	at java.base/java.lang.Thread.run(Thread.java:1527)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: Error General : "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]" [50000-252]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 22 more
+Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:998)
+	at org.h2.mvstore.SingleFileStore.lockFileChannel(SingleFileStore.java:143)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:117)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:293)
+	... 16 more
+2026-10-28 15:25:09.979047+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Imposible eliminar "LIBROS" debido a que "FK_PRESTAMOS_LIBROS" depende de él.
+Cannot drop "LIBROS" because "FK_PRESTAMOS_LIBROS" depends on it; SQL statement:
+DROP TABLE libros [90107-252]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.command.ddl.DropTable.prepareDrop(DropTable.java:104)
+	at org.h2.command.ddl.DropTable.update(DropTable.java:129)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:139)
+	at org.h2.command.Command.executeUpdate(Command.java:307)
+	at org.h2.command.Command.executeUpdate(Command.java:251)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1344)
+	at org.h2.server.web.WebApp.query(WebApp.java:1142)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1108)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1095)
+	at org.h2.server.web.WebThread.process(WebThread.java:190)
+	at org.h2.server.web.WebThread.run(WebThread.java:103)
+	at java.base/java.lang.Thread.run(Thread.java:1527)
+2026-10-28 15:25:10.281595+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Imposible eliminar "LIBROS" debido a que "FK_PRESTAMOS_LIBROS" depende de él.
+Cannot drop "LIBROS" because "FK_PRESTAMOS_LIBROS" depends on it; SQL statement:
+DROP TABLE libros [90107-252]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.command.ddl.DropTable.prepareDrop(DropTable.java:104)
+	at org.h2.command.ddl.DropTable.update(DropTable.java:129)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:139)
+	at org.h2.command.Command.executeUpdate(Command.java:307)
+	at org.h2.command.Command.executeUpdate(Command.java:251)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1344)
+	at org.h2.server.web.WebApp.query(WebApp.java:1142)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1108)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1095)
+	at org.h2.server.web.WebThread.process(WebThread.java:190)
+	at org.h2.server.web.WebThread.run(WebThread.java:103)
+	at java.base/java.lang.Thread.run(Thread.java:1527)
+2026-10-28 15:28:20.919204+01:00 database: flush
+org.h2.message.DbException: Error General : "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]" [50000-252]
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.message.DbException.convert(DbException.java:407)
+	at org.h2.mvstore.db.Store.lambda$new$0(Store.java:123)
+	at org.h2.mvstore.MVStore.handleException(MVStore.java:1693)
+	at org.h2.mvstore.MVStore.panic(MVStore.java:521)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:298)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2193)
+	at org.h2.mvstore.db.Store.<init>(Store.java:140)
+	at org.h2.engine.Database.<init>(Database.java:328)
+	at org.h2.engine.Engine.openSession(Engine.java:92)
+	at org.h2.engine.Engine.openSession(Engine.java:222)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:350)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:124)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:613)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:199)
+	at TableLoans.main(TableLoans.java:9)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: Error General : "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]" [50000-252]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 18 more
+Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:998)
+	at org.h2.mvstore.SingleFileStore.lockFileChannel(SingleFileStore.java:143)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:117)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:293)
+	... 12 more
+2026-10-28 15:34:15.291246+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT libros.id, libros.titulo, libros.isbn, libros.anio, libros.sinopsis,\000d\000aautores.nombre AS autor, generos.nombre AS genero\000d\000a[*]INNER JOIN autores\000d\000aON libros.id_autor = autores.id\000d\000aINNER JOIN generos\000d\000aON libros.id_genero = generos.id\000d\000a FROM libros"
+Syntax error in SQL statement "SELECT libros.id, libros.titulo, libros.isbn, libros.anio, libros.sinopsis,\000d\000aautores.nombre AS autor, generos.nombre AS genero\000d\000a[*]INNER JOIN autores\000d\000aON libros.id_autor = autores.id\000d\000aINNER JOIN generos\000d\000aON libros.id_genero = generos.id\000d\000a FROM libros"; SQL statement:
+SELECT libros.id, libros.titulo, libros.isbn, libros.anio, libros.sinopsis,
+autores.nombre AS autor, generos.nombre AS genero
+INNER JOIN autores
+ON libros.id_autor = autores.id
+INNER JOIN generos
+ON libros.id_genero = generos.id
+ FROM libros [42000-252]
+2026-10-28 15:39:49.698145+01:00 database: flush
+org.h2.message.DbException: Error General : "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]" [50000-252]
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.message.DbException.convert(DbException.java:407)
+	at org.h2.mvstore.db.Store.lambda$new$0(Store.java:123)
+	at org.h2.mvstore.MVStore.handleException(MVStore.java:1693)
+	at org.h2.mvstore.MVStore.panic(MVStore.java:521)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:298)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2193)
+	at org.h2.mvstore.db.Store.<init>(Store.java:140)
+	at org.h2.engine.Database.<init>(Database.java:328)
+	at org.h2.engine.Engine.openSession(Engine.java:92)
+	at org.h2.engine.Engine.openSession(Engine.java:222)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:350)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:124)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:613)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:199)
+	at Menu.main(Menu.java:12)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: Error General : "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]" [50000-252]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 18 more
+Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/Usuario/Documents/curso_java/curso_bd/java_dabba_book/biblioteca.mv.db [2.5.252/7]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:998)
+	at org.h2.mvstore.SingleFileStore.lockFileChannel(SingleFileStore.java:143)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:117)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:293)
+	... 12 more
