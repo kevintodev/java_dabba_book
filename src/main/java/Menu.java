@@ -90,7 +90,7 @@ public class Menu {
     private static void listAuthors(Connection con) {
         /* Lista todos los autores registrados en la biblioteca */
 
-        String sql = "SELECT * FROM autores";
+        String sql = "SELECT * FROM autores ORDER BY id";
         try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ResultSet rs = ps.executeQuery();
@@ -142,7 +142,7 @@ public class Menu {
 
     private static void listGenres(Connection con) {
         /* Lista los géneros de libros registrados en la biblioteca */
-        String sql = "SELECT * FROM generos";
+        String sql = "SELECT * FROM generos ORDER BY id";
         try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ResultSet rs = ps.executeQuery();
@@ -174,7 +174,7 @@ public class Menu {
         int idGenre = readInteger("[+] ID del género: ");
         String title = readStringInput("[+] Título: ");
         String isbn = readStringInput("[+] ISBN: ");
-        int year = readInteger("Año de publicación: ");
+        int year = readInteger("[+] Año de publicación: ");
         String sinopsis = readStringInput("[+] Sinopsis: ");
 
         String sql = "INSERT INTO libros (id_autor, id_genero, titulo, isbn, anio, sinopsis) VALUES(?, ?, ?, ?, ?, ?)";
@@ -210,6 +210,7 @@ public class Menu {
                     ON libros.id_autor = autores.id
                 INNER JOIN generos
                     ON libros.id_genero = generos.id
+                 ORDER BY libros.id
         """;
         try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -270,7 +271,7 @@ public class Menu {
     }
     private static void listMembers(Connection con) {
         /* Lista los socios registrados en la biblioteca */
-        String sql = "SELECT * FROM socios";
+        String sql = "SELECT * FROM socios ORDER BY id";
         try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ResultSet rs = ps.executeQuery();
@@ -342,6 +343,7 @@ public class Menu {
                     ON prestamos.id_libro = libros.id
                 INNER JOIN socios
                     ON prestamos.id_socio = socios.id
+                ORDER BY prestamos.id
                 """;
         try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -431,7 +433,6 @@ public class Menu {
         while (!SC.hasNextInt()) {
             String in = SC.next();
             System.out.println("Error: Opción no válida");
-            showMenu();
             System.out.print(message);
         }
         int opt = SC.nextInt();
