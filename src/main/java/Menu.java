@@ -61,9 +61,8 @@ public class Menu {
     }
 
     private static void registerAuthor(Connection con) {
-        /* Solicita  */
+        /* Solicita datos del autor por teclado y lo guarda en la base de datos  */
         System.out.println("\n------------- REGISTRAR AUTOR --------------");
-        // Pedir nombre, año de nacimiento, nacionalidad, número de premios
         String name = readStringInput("[+] Nombre del autor: ");
         int year = readInteger("[+] Año de nacimiento: ");
         String nationality = readStringInput("[+] Nacionalidad: ");
@@ -95,6 +94,7 @@ public class Menu {
 
 
     private static void listAuthors(Connection con) {
+        /* Lista todos los autores registrados en la biblioteca */
 
         String sql = "SELECT * FROM autores";
         try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -122,12 +122,51 @@ public class Menu {
 
 
     private static void registerGenre(Connection con) {
-        System.out.println("POR HACER: REGISTRAR GÉNERO");
+        /* Solicita el nombre y la descripción del género por teclado y lo guarda en la tabla géneros */
+        System.out.println("\n------------- REGISTRAR GÉNERO --------------");
+        String name = readStringInput("[+] Nombre del género: ");
+        String description = readStringInput("[+] Descripción: ");
+
+        String sql = "INSERT INTO generos (nombre, descripcion) VALUES(?, ?)";
+        try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, name);
+            ps.setString(2, description);
+            ps.executeUpdate();
+
+            try ( ResultSet rs = ps.getGeneratedKeys() ) {
+                if (rs.next()) {
+                    System.out.println("Género registrado con id: " + rs.getInt(1));
+                }
+            } catch (SQLException e) {
+                System.out.println("Error durante el registro: " + e.getMessage());
+            }
+
+        } catch ( SQLException e ) {
+            System.out.println("Error al registrar género: " + e.getMessage());
+        }
     }
 
     private static void listGenres(Connection con) {
+        /* Lista los géneros de libros registrados en la biblioteca */
+        String sql = "SELECT * FROM generos";
+        try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-        System.out.println("POR HACER: LISTAR GÉNEROS");
+            ResultSet rs = ps.executeQuery();
+            System.out.println("\n====================== LISTA DE AUTORES ============================");
+
+            while ( rs.next() ) {
+                int id = rs.getInt("id");
+                String name = rs.getString("nombre");
+                String description = rs.getString("descripcion");
+                System.out.println("---------------------------------------------------------------------------");
+                System.out.printf("ID: %d | Nombre: %s | Descripción: %s%n", id, name, description);
+            }
+            System.out.println("---------------------------------------------------------------------------");
+            System.out.println("======================================================================");
+
+        } catch ( SQLException e ) {
+            System.out.println("Error al leer la tabla géneros: " + e.getMessage());
+        }
     }
 
     private static void registerBook(Connection con) {
