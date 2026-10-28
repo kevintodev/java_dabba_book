@@ -245,12 +245,62 @@ public class Menu {
         }
     }
     private static void registerMember(Connection con) {
-        System.out.println("POR HACER: REGISTRAR SOCIO");
+        /* Solicita el nombre, apellidos, email y teléfono y lo guarda en la tabla socios */
+        System.out.println("\n------------- REGISTRAR SOCIO --------------");
+        String name = readStringInput("[+] Nombre: ");
+        String firstLastname = readStringInput("[+] Primer apellido: ");
+        String secondLastname = readStringInput("[+] Segundo apellido: ");
+        String email = readStringInput("[+] Email: ");
+        String phone = readStringInput("[+] Teléfono: ");
+
+        String sql = "INSERT INTO socios (nombre, apellido1, apellido2, email, telefono ) VALUES(?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, name);
+            ps.setString(2, firstLastname);
+            ps.setString(3, secondLastname);
+            ps.setString(4, email);
+            ps.setString(5, phone);
+            ps.executeUpdate();
+
+            try ( ResultSet rs = ps.getGeneratedKeys() ) {
+                if (rs.next()) {
+                    System.out.println("Socio registrado con id: " + rs.getInt(1));
+                }
+            } catch (SQLException e) {
+                System.out.println("Error durante el registro: " + e.getMessage());
+            }
+
+        } catch ( SQLException e ) {
+            System.out.println("Error al registrar al socio: " + e.getMessage());
+        }
 
     }
     private static void listMembers(Connection con) {
+        /* Lista los socios registrados en la biblioteca */
+        String sql = "SELECT * FROM socios";
+        try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-        System.out.println("POR HACER: LISTAR SOCIOS");
+            ResultSet rs = ps.executeQuery();
+            System.out.println("\n====================== LISTA DE SOCIOS ============================");
+
+            while ( rs.next() ) {
+                int id = rs.getInt("id");
+                String name = rs.getString("nombre");
+                String firstLastname = rs.getString("apellido1");
+                String secondLastname = rs.getString("apellido2");
+                String email = rs.getString("email");
+                String phone = rs.getString("telefono");
+                System.out.println("---------------------------------------------------------------------------");
+                System.out.printf("ID: %d | Nombre: %s | Apellido 1: %s | Apellido 2: %s | Email: %s | Teléfono: %s %n",
+                        id, name, firstLastname, secondLastname, email, phone);
+            }
+            System.out.println("---------------------------------------------------------------------------");
+            System.out.println("======================================================================");
+
+        } catch ( SQLException e ) {
+            System.out.println("Error al leer la tabla socios: " + e.getMessage());
+        }
+
     }
 
     private static void registerLoan(Connection con) {
